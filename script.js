@@ -7,6 +7,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // [data-form-validator]
 
+    var validateButton = DOC.querySelector("button");
+    validateButton.addEventListener("click", function(event){
+        console.log("clicked");
+        var elements = DOC.querySelectorAll("[data-form-validator]");
+        var parsedElements = parse(elements);
+
+        for(var i = 0, length = elements.length; i < length; i++) {
+            var element = elements[i];
+            var validators = element.attributes.getNamedItem("data-form-validator").value.split(",");
+            console.log(validators);
+        }
+
+        console.log(elements);
+        console.log(parsedElements);
+    });
+
     var forms = DOC.querySelectorAll("[data-event-listener][data-event-handler]");
 
     for(var i = 0, length = forms.length; i < length; i++) {
@@ -44,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
 
         console.log(data);
+        return data;
 
     }
 
