@@ -10,6 +10,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var validateButton = DOC.querySelector("button");
     validateButton.addEventListener("click", function(event){
         console.log("clicked");
+        var validation ={
+            integer: function(value) {
+                console.log("integer: " + value);
+            },
+            notempty: function(value) {
+                console.log("notempty: " + value);
+            }
+        };
+
         var elements = DOC.querySelectorAll("[data-form-validator]");
         var parsedElements = parse(elements);
 
@@ -17,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var element = elements[i];
             var validators = element.attributes.getNamedItem("data-form-validator").value.split(",");
             console.log(validators);
+            for(var j = 0, v_length = validators.length; j < v_length; j++) {
+                var validator = validators[j];
+                validation[validator](parsedElements[element.name]);
+            }
         }
 
         console.log(elements);
