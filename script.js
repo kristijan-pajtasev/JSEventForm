@@ -41,7 +41,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if(registeredEvent != undefined && registeredEvent.value.indexOf(event.type) >= 0) {
                 var eventsList = registeredEvent.value.split(",");
                 for(var j = 0, jLength = eventsList.length; j < jLength; j++) {
-                    events.trigger(eventsList[j], event, this);
+                    if(eventsList[j].indexOf(event.type) == 0) {
+                        events.trigger(eventsList[j], event, this);
+                    }
                 }
             }
         });
