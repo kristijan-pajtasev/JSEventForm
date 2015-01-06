@@ -1,6 +1,18 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
 
+    function getValidationFields(element) {
+        var fields = [];
+        if(element.attributes.getNamedItem("data-form-validator") != undefined) {
+            fields.push(element);
+        }
+        var children = element.children;
+        for(var i = 0, length = children.length; i < length; i++) {
+            fields = fields.concat(getValidationFields(children[i]));
+        }
+        return fields;
+    }
+
     var events = new JSEvent();
     events.register("click:test", function(){alert("test")});
     events.register("click:test1", function(){alert("test1")});
@@ -8,18 +20,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.preventDefault();
         var formService = new JSForm(event);
         var form = event.target;
-        var data = formService.parse(form.elements);
-        console.log(data);
+        var valid = formService.valid(getValidationFields(form));
+        if(valid == true) {
+            var data = formService.parse(form);
+            console.log("parsed valid data");
+            console.log(data);
+        } else {
+            console.log("errors");
+            console.log(valid);
+        }
     });
 
-    var DOC = document;
     var body = document.querySelector("body");
-
-    //var validateButton = DOC.querySelector("button");
-    //validateButton.addEventListener("click", function(event){
-    //    console.log(formObject.valid(DOC.querySelectorAll("[data-form-validator]")));
-    //});
-
 
     var eventTypes = ["click", "submit"];
     for(var i = 0, length = eventTypes.length; i < length; i++) {
@@ -34,7 +46,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
         });
     }
-
-    var forms = DOC.querySelectorAll("[data-event-listener][data-event-handler]");
-
 });
