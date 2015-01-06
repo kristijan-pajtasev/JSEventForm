@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     var events = new JSEvent();
     events.register("click:test", function(){alert("test")});
+    events.register("click:test1", function(){alert("test1")});
 
     var DOC = document;
     var body = document.querySelector("body");
@@ -20,20 +21,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var target = event.target;
             var registeredEvent = target.attributes.getNamedItem("data-event");
             if(registeredEvent != undefined) {
-                events.trigger(registeredEvent.value, event, this);
+                var eventsList = registeredEvent.value.split(",");
+                for(var j = 0, jLength = eventsList.length; j < jLength; j++) {
+                    events.trigger(eventsList[j], event, this);
+                }
             }
         });
     }
 
     var forms = DOC.querySelectorAll("[data-event-listener][data-event-handler]");
-    //
-    //for(var i = 0, length = forms.length; i < length; i++) {
-    //    var form = forms[i];
-    //    form.addEventListener("submit", function(event){
-    //        var target = event.target;
-    //        formObject.parse(target.elements);
-    //        event.preventDefault();
-    //    });
-    //}
 
 });
